@@ -1,0 +1,11 @@
+package dto
+
+type TableInputDTO struct {
+	Number   int `json:"number"`
+	Capacity int `json:"capacity"`
+}
+type TableOutputDTO struct {
+	Id       string
+	Number   int
+	Capacity int
+}
