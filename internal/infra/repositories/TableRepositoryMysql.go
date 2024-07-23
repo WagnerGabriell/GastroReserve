@@ -22,12 +22,12 @@ func (r *TableRepositoryMysql) CreateTable(table *entities.Table) error {
 }
 func (r *TableRepositoryMysql) GetTable() ([]*entities.Table, error) {
 	var tables []*entities.Table
-	var table entities.Table
 	row, err := r.Db.Query("SELECT id,number,capacity FROM tables")
 	if err != nil {
 		return nil, err
 	}
 	for row.Next() {
+		var table entities.Table
 		err := row.Scan(&table.Id, &table.Number, &table.Capacity)
 		if err != nil {
 			return nil, err

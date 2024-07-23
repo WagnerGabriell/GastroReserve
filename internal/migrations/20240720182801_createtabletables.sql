@@ -1,6 +1,6 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE tables (
+CREATE TABLE IF NOT EXISTS tables (
     id VARCHAR(100) NOT NULL PRIMARY KEY,
     number int UNIQUE NOT NULL,
     capacity int NOT NULL,

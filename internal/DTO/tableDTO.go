@@ -9,3 +9,6 @@ type TableOutputDTO struct {
 	Number   int
 	Capacity int
 }
+type TableNumberInputDTO struct {
+	Number int `json:"number"`
+}
