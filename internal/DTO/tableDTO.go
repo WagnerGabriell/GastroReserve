@@ -12,3 +12,6 @@ type TableOutputDTO struct {
 type TableNumberInputDTO struct {
 	Number int `json:"number"`
 }
+type TableDataInputDTO struct {
+	Data string `json:"data"`
+}

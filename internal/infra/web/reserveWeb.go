@@ -10,11 +10,13 @@ import (
 
 type ReserveWeb struct {
 	CreateReserveUseCase *usecases.CreateReserveUseCase
+	GetAllReserveUseCase *usecases.GetAllReserveUseCase
 }
 
-func NewReserveWeb(createReserveUseCase *usecases.CreateReserveUseCase) *ReserveWeb {
+func NewReserveWeb(createReserveUseCase *usecases.CreateReserveUseCase, getAllReserveUseCase *usecases.GetAllReserveUseCase) *ReserveWeb {
 	return &ReserveWeb{
 		CreateReserveUseCase: createReserveUseCase,
+		GetAllReserveUseCase: getAllReserveUseCase,
 	}
 }
 
@@ -31,4 +33,12 @@ func (w *ReserveWeb) CreateReserveWeb(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H{"ReserveOutput": reserveOutputDTO})
+}
+func (w *ReserveWeb) GetAllReserveWeb(c *gin.Context) {
+	reserveOutput, err := w.GetAllReserveUseCase.Execute()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"err": err})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"Reserve": reserveOutput})
 }

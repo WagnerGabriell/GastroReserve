@@ -5,9 +5,9 @@ type Custumer struct {
 	PhoneNumber string
 }
 
-func NewCustumer(name string, phoneNumber string) *Custumer {
-	return &Custumer{
-		Name:        name,
-		PhoneNumber: phoneNumber,
-	}
-}
+// func NewCustumer(name string, phoneNumber string) *Custumer {
+// 	return &Custumer{
+// 		Name:        name,
+// 		PhoneNumber: phoneNumber,
+// 	}
+// }
