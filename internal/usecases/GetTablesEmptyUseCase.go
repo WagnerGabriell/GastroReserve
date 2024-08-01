@@ -5,16 +5,16 @@ import (
 	"GastroReserve/internal/infra/repositories"
 )
 
-type GetTablesEmptyUseCase struct {
+type GetTablesEmptyDataUseCase struct {
 	Repository repositories.ITableRepositoryMysql
 }
 
-func NewGetTablesEmptyUseCase(repository repositories.ITableRepositoryMysql) *GetTablesEmptyUseCase {
-	return &GetTablesEmptyUseCase{Repository: repository}
+func NewGetTablesEmptyDataUseCase(repository repositories.ITableRepositoryMysql) *GetTablesEmptyDataUseCase {
+	return &GetTablesEmptyDataUseCase{Repository: repository}
 }
-func (u *GetTablesEmptyUseCase) Execute(data string) ([]*dto.TableOutputDTO, error) {
+func (u *GetTablesEmptyDataUseCase) Execute(data string) ([]*dto.TableOutputDTO, error) {
 	var listReserveOutputDTO []*dto.TableOutputDTO
-	row, err := u.Repository.GetTablesEmpty(data)
+	row, err := u.Repository.GetTablesEmptyData(data)
 	if err != nil {
 		return nil, err
 	}

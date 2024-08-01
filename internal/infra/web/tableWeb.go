@@ -9,23 +9,23 @@ import (
 )
 
 type TableWeb struct {
-	CreateTable       *usecases.CreateTableUseCase
-	GetAllTable       *usecases.GetAllTableUseCase
-	GetTablePerNumber *usecases.GetTablePerNumberUseCase
-	GetTablesEmpty    *usecases.GetTablesEmptyUseCase
+	CreateTable        *usecases.CreateTableUseCase
+	GetAllTable        *usecases.GetAllTableUseCase
+	GetTablePerNumber  *usecases.GetTablePerNumberUseCase
+	GetTablesEmptyData *usecases.GetTablesEmptyDataUseCase
 }
 
 func NewTableWeb(
 	createTable *usecases.CreateTableUseCase,
 	getAllTable *usecases.GetAllTableUseCase,
 	getTablePerNumber *usecases.GetTablePerNumberUseCase,
-	getTablesEmpty *usecases.GetTablesEmptyUseCase,
+	GetTablesEmptyData *usecases.GetTablesEmptyDataUseCase,
 ) *TableWeb {
 	return &TableWeb{
-		CreateTable:       createTable,
-		GetAllTable:       getAllTable,
-		GetTablePerNumber: getTablePerNumber,
-		GetTablesEmpty:    getTablesEmpty,
+		CreateTable:        createTable,
+		GetAllTable:        getAllTable,
+		GetTablePerNumber:  getTablePerNumber,
+		GetTablesEmptyData: GetTablesEmptyData,
 	}
 }
 
@@ -66,14 +66,14 @@ func (w *TableWeb) GetTablePerNumberWeb(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"Table": tableOutput})
 }
-func (w *TableWeb) GetTablesEmptyWeb(c *gin.Context) {
+func (w *TableWeb) GetTablesEmptyDataWeb(c *gin.Context) {
 	var data dto.TableDataInputDTO
 	err := c.ShouldBindJSON(&data)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"err": err})
 		return
 	}
-	output, err := w.GetTablesEmpty.Execute(data.Data)
+	output, err := w.GetTablesEmptyData.Execute(data.Data)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"err": err})
 		return

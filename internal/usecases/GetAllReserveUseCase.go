@@ -21,10 +21,10 @@ func (u *GetAllReserveUseCase) Execute() ([]*dto.ReserveOutputDTO, error) {
 	var reserveOutputDTO []*dto.ReserveOutputDTO
 	for _, r := range reserves {
 		reserveOutputDTO = append(reserveOutputDTO, &dto.ReserveOutputDTO{
-			Id:       r.Id,
-			Custumer: r.Custumer,
-			TableId:  r.TableId,
-			Data:     r.Data,
+			Id:      r.Id,
+			UserId:  r.UserId,
+			TableId: r.TableId,
+			Data:    r.Data,
 		})
 	}
 	return reserveOutputDTO, nil

@@ -1,14 +1,16 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE IF NOT EXISTS reserve(
+CREATE TABLE IF NOT EXISTS user(
     id VARCHAR(50) NOT NULL PRIMARY KEY,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
     name VARCHAR(100) NOT NULL,
-    userId VARCHAR(50) NOT NULL FOREIGN KEY,
-    data TIMESTAMP NOT NULL
-);
+    phoneNumber VARCHAR(30) NOT NULL,
+    isAdmin BOOLEAN NOT NULL
+)
 -- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE reserve
+DROP TABLE user
 -- +goose StatementEnd

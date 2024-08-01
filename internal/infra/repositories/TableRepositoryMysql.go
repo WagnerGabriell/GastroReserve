@@ -36,17 +36,17 @@ func (r *TableRepositoryMysql) GetTable() ([]*entities.Table, error) {
 	}
 	return tables, nil
 }
-func (r *TableRepositoryMysql) GetTablePerNumber(number int) (entities.Table, error) {
+func (r *TableRepositoryMysql) GetTablePerNumber(number int) (*entities.Table, error) {
 	var table entities.Table
 	row := r.Db.QueryRow("SELECT id,number,capacity FROM tables WHERE number = ?", number)
 	err := row.Scan(&table.Id, &table.Number, &table.Capacity)
 	if err != nil {
-		return entities.Table{}, err
+		return &entities.Table{}, err
 	}
-	return table, nil
+	return &table, nil
 }
 
-func (r *TableRepositoryMysql) GetTablesEmpty(data string) ([]*entities.Table, error) {
+func (r *TableRepositoryMysql) GetTablesEmptyData(data string) ([]*entities.Table, error) {
 	var emptyTables []*entities.Table
 	row, err := r.Db.Query("SELECT t.id,t.number,t.capacity FROM tables t LEFT JOIN reserve r ON t.id = r.tableId AND r.data = ? WHERE r.id IS NULL", data)
 

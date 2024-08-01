@@ -5,17 +5,17 @@ import (
 )
 
 type Reserve struct {
-	Id       string
-	Custumer Custumer
-	TableId  string
-	Data     string
+	Id      string
+	UserId  string
+	TableId string
+	Data    string
 }
 
-func NewReserve(tableId string, custumer Custumer, data string) *Reserve {
+func NewReserve(tableId string, userId string, data string) *Reserve {
 	return &Reserve{
-		Id:       uuid.New().String(),
-		Custumer: custumer,
-		TableId:  tableId,
-		Data:     data,
+		Id:      uuid.New().String(),
+		UserId:  userId,
+		TableId: tableId,
+		Data:    data,
 	}
 }
