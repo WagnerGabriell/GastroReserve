@@ -24,7 +24,7 @@ func (u *LoginUseCase) Execute(UserLoginInputDTO dto.UserLoginInputDTO) (string,
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(UserLoginInputDTO.Password))
 	if err != nil {
-		return "c", err
+		return "", err
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"Id":      user.Id,

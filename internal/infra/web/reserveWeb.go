@@ -27,13 +27,19 @@ func (w *ReserveWeb) CreateReserveWeb(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
-	reserveOutputDTO, err := w.CreateReserveUseCase.Execute(&reserveInputDTO)
+	id, exists := c.Get("Id")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
+	}
+	reserveOutputDTO, err := w.CreateReserveUseCase.Execute(&reserveInputDTO, id.(string))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H{"ReserveOutput": reserveOutputDTO})
 }
+
 func (w *ReserveWeb) GetAllReserveWeb(c *gin.Context) {
 	reserveOutput, err := w.GetAllReserveUseCase.Execute()
 	if err != nil {

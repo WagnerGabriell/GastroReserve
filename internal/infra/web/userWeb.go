@@ -62,13 +62,13 @@ func (u *UserWeb) VerificarTokenUseCase(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Token invalid"})
 		c.Abort()
 	}
-	res, err := u.VerificationToken.Execute(jwtToken)
+	ClaimsOutputDTO, err := u.VerificationToken.Execute(jwtToken)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"err": err})
 		c.Abort()
 	}
-	c.Set("Id", res[0])
-	c.Set("IsAdmin", res[1])
+	c.Set("Id", ClaimsOutputDTO.Id)
+	c.Set("IsAdmin", ClaimsOutputDTO.IsAdmin)
 	c.Next()
 }

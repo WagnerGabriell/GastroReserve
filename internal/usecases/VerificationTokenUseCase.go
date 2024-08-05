@@ -1,6 +1,7 @@
 package usecases
 
 import (
+	dto "GastroReserve/internal/DTO"
 	"fmt"
 	"os"
 
@@ -13,12 +14,12 @@ func NewVerifyTokenUseCase() *VerifyTokenUseCase {
 	return &VerifyTokenUseCase{}
 }
 
-func (u *VerifyTokenUseCase) Execute(tokenString string) ([]string, error) {
+func (u *VerifyTokenUseCase) Execute(tokenString string) (*dto.ClaimsOutputDTO, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("token inválido")
 		}
-		return os.Getenv("SECRETKEY"), nil
+		return []byte(os.Getenv("SECRETKEY")), nil
 	})
 
 	if err != nil {
@@ -33,9 +34,12 @@ func (u *VerifyTokenUseCase) Execute(tokenString string) ([]string, error) {
 	if !ok {
 		return nil, fmt.Errorf("token inválido")
 	}
-	isAdmin, ok := claims["IsAdmin"].(string)
+	isAdmin, ok := claims["IsAdmin"].(bool)
 	if !ok {
 		return nil, fmt.Errorf("token inválido")
 	}
-	return []string{id, isAdmin}, nil
+	return &dto.ClaimsOutputDTO{
+		Id:      id,
+		IsAdmin: isAdmin,
+	}, nil
 }

@@ -50,7 +50,7 @@ func main() {
 	Reserve := r.Group("/reserve")
 	{
 		Reserve.GET("/list", reserveWeb.GetAllReserveWeb)
-		Reserve.POST("/create", reserveWeb.CreateReserveWeb)
+		Reserve.POST("/create", userWeb.VerificarTokenUseCase, reserveWeb.CreateReserveWeb)
 	}
 	User := r.Group("/user")
 	{

@@ -14,8 +14,8 @@ func NewCreateReserveUseCase(repository repositories.IReserveRepositoryMysql) *C
 	return &CreateReserveUseCase{Repository: repository}
 }
 
-func (u *CreateReserveUseCase) Execute(reserveInputDTO *dto.ReserveInputDTO) (dto.ReserveOutputDTO, error) {
-	newReserve := entities.NewReserve(reserveInputDTO.TableId, reserveInputDTO.UserId, reserveInputDTO.Data)
+func (u *CreateReserveUseCase) Execute(reserveInputDTO *dto.ReserveInputDTO, UId string) (dto.ReserveOutputDTO, error) {
+	newReserve := entities.NewReserve(reserveInputDTO.TableId, UId, reserveInputDTO.Data)
 	err := u.Repository.CreateReserve(newReserve)
 	if err != nil {
 		return dto.ReserveOutputDTO{}, err
