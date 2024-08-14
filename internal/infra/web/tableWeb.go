@@ -31,6 +31,7 @@ func NewTableWeb(
 
 func (w *TableWeb) CreateTableWeb(c *gin.Context) {
 	var tableInput dto.TableInputDTO
+
 	err := c.ShouldBindJSON(&tableInput)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"err": err})

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"GastroReserve/internal/api/middleware"
 	"GastroReserve/internal/infra/repositories"
 	"GastroReserve/internal/infra/web"
 	"GastroReserve/internal/usecases"
@@ -35,22 +36,26 @@ func main() {
 
 	userRepository := repositories.NewUserRepositoryMySql(db)
 	loginUser := usecases.NewLoginUseCase(userRepository)
-	verificationToken := usecases.NewVerifyTokenUseCase()
+
 	registroUser := usecases.NewRegisterUserUseCase(userRepository)
-	userWeb := web.NewUserWeb(registroUser, loginUser, verificationToken)
+	userWeb := web.NewUserWeb(registroUser, loginUser)
+
+	verificationToken := usecases.NewVerifyTokenUseCase()
+	authMiddleWare := middleware.NewAuthMiddleWare(verificationToken)
+	isAdminMiddleWare := middleware.NewIsAdminMiddleWare()
 
 	r := gin.Default()
 	Table := r.Group("/table")
 	{
-		Table.POST("/create", tableWeb.CreateTableWeb)
+		Table.POST("/create", authMiddleWare.VerificarTokenMiddleWare, isAdminMiddleWare.VerificarIsAdminMiddleWare, tableWeb.CreateTableWeb)
 		Table.GET("/list", tableWeb.GetAllTableWeb)
 		Table.GET("/getNumber", tableWeb.GetTablePerNumberWeb)
 		Table.POST("/empty", tableWeb.GetTablesEmptyDataWeb)
 	}
 	Reserve := r.Group("/reserve")
 	{
-		Reserve.GET("/list", reserveWeb.GetAllReserveWeb)
-		Reserve.POST("/create", userWeb.VerificarTokenUseCase, reserveWeb.CreateReserveWeb)
+		Reserve.GET("/list", authMiddleWare.VerificarTokenMiddleWare, reserveWeb.GetAllReserveWeb)
+		Reserve.POST("/create", authMiddleWare.VerificarTokenMiddleWare, reserveWeb.CreateReserveWeb)
 	}
 	User := r.Group("/user")
 	{

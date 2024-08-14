@@ -38,9 +38,20 @@ func (r *UserRepositoryMySql) CreateUser(user entities.User) error {
 	return nil
 }
 func (r *UserRepositoryMySql) GetUser(id string) (*entities.User, error) {
-	return nil, nil
+	var user entities.User
+	row := r.Db.QueryRow("SELECT id,email,password,name,phoneNumber,isAdmin FROM user WHERE id = ?", id)
+	err := row.Scan(&user.Id, &user.Email, &user.Password, &user.Name, &user.PhoneNumber, &user.IsAdmin)
+	if err != nil {
+		return &entities.User{}, err
+	}
+
+	return &user, nil
 }
 func (r *UserRepositoryMySql) BecomeAdm(id string) error {
+	_, err := r.Db.Exec("UPDADE user SET isAdmin = true WHERE id = ?", id)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 func (r *UserRepositoryMySql) GetUserPerEmail(email string) (*entities.User, error) {
@@ -48,7 +59,7 @@ func (r *UserRepositoryMySql) GetUserPerEmail(email string) (*entities.User, err
 	row := r.Db.QueryRow("SELECT id,email,password,name,phoneNumber,isAdmin FROM user WHERE email = ?", email)
 	err := row.Scan(&user.Id, &user.Email, &user.Password, &user.Name, &user.PhoneNumber, &user.IsAdmin)
 	if err != nil {
-		return &entities.User{}, err
+		return nil, err
 	}
 	return &user, nil
 }

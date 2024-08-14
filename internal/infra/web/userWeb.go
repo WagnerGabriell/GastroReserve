@@ -9,16 +9,14 @@ import (
 )
 
 type UserWeb struct {
-	RegistroUser      *usecases.RegisterUserUseCase
-	LoginUser         *usecases.LoginUseCase
-	VerificationToken *usecases.VerifyTokenUseCase
+	RegistroUser *usecases.RegisterUserUseCase
+	LoginUser    *usecases.LoginUseCase
 }
 
-func NewUserWeb(registroUser *usecases.RegisterUserUseCase, loginUser *usecases.LoginUseCase, verificationToken *usecases.VerifyTokenUseCase) *UserWeb {
+func NewUserWeb(registroUser *usecases.RegisterUserUseCase, loginUser *usecases.LoginUseCase) *UserWeb {
 	return &UserWeb{
-		RegistroUser:      registroUser,
-		LoginUser:         loginUser,
-		VerificationToken: verificationToken,
+		RegistroUser: registroUser,
+		LoginUser:    loginUser,
 	}
 }
 func (w *UserWeb) RegisterUserWeb(c *gin.Context) {
@@ -54,21 +52,4 @@ func (w *UserWeb) LoginUserWeb(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"Token": token})
-}
-
-func (u *UserWeb) VerificarTokenUseCase(c *gin.Context) {
-	jwtToken := c.GetHeader("Token")
-	if jwtToken == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Token invalid"})
-		c.Abort()
-	}
-	ClaimsOutputDTO, err := u.VerificationToken.Execute(jwtToken)
-
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"err": err})
-		c.Abort()
-	}
-	c.Set("Id", ClaimsOutputDTO.Id)
-	c.Set("IsAdmin", ClaimsOutputDTO.IsAdmin)
-	c.Next()
 }
